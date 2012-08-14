@@ -1,0 +1,29 @@
+<?php
+// http://davidsonj.com/blog/saving-fields-usersave
+function pro_101_support_accounts_install() {
+  global $user;
+  $language = ($user->language) ? $user->language : 'und';
+
+  $default_timezone = variable_get('date_default_timezone', '');
+
+  $account = new stdClass();
+  $account->is_new = true;
+  $newUserData = array(
+    'name' => '',
+    'pass' => '!', // note: do not md5 the password
+    'mail' => '',
+    'status' => 1,
+    'timezone' => $default_timezone,
+    'init' => '',
+    'roles' => array('160159362' => 'support'),
+    'field_first_name' => array($language => array(0 => array('value' => 'Support',),),),
+    'field_last_name' => array($language => array(0 => array('value' => 'Staff',),),),
+    'field_title' => array($language => array(0 => array('value' => '',),),),
+    'field_pro_bio' => array($language => array(0 => array('value' => '',),),),
+    'field_bio_summary' => array($language => array(0 => array('value' => '
+    Pearance support staff is a team of enthusiastic web developers, designers,
+  and writers. Who are committed to assisting in delivering relevant information
+  to consumers in a clean, concise, and timely manner.',),),),
+  );
+  $new_user = user_save($account, $newUserData);
+}
